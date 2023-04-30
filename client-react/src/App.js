@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import TopBar from "./TopBar";
+import HomeState from "./HomeState";
+import SearchState from "./SearchState";
+import ItemState from "./ItemState";
 
 function App() {
   // const [data, setData] = useState([]);
@@ -26,6 +29,14 @@ function App() {
         homePageState={homePageState}
         setHomePageState={setHomePageState}
       />
+      <br />
+      {homePageState === 0 ? (
+        <HomeState />
+      ) : homePageState === 1 ? (
+        <SearchState />
+      ) : (
+        <ItemState />
+      )}
     </>
   );
 }
