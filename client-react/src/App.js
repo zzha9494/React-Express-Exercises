@@ -7,7 +7,7 @@ import ItemState from "./ItemState";
 function App() {
   const [homePageState, setHomePageState] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
-  const [filter, setFilter] = useState({ brand: "", price: 50 });
+  const [filter, setFilter] = useState({ brand: "", price: Infinity });
 
   useEffect(() => console.log(filter), [filter]);
 
@@ -16,6 +16,7 @@ function App() {
       <TopBar
         homePageState={homePageState}
         setHomePageState={setHomePageState}
+        searchResult={searchResult}
         setSearchResult={setSearchResult}
         filter={filter}
         setFilter={setFilter}
@@ -24,7 +25,7 @@ function App() {
       {homePageState === 0 ? (
         <HomeState />
       ) : homePageState === 1 ? (
-        <SearchState />
+        <SearchState searchResult={searchResult} filter={filter} />
       ) : (
         <ItemState />
       )}

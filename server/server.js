@@ -19,7 +19,7 @@ const phones = [
   {
     title:
       '"CLEAR CLEAN ESN" Sprint EPIC 4G Galaxy SPH-D700*FRONT CAMERA*ANDROID*SLIDER*QWERTY KEYBOARD*TOUCH SCREEN',
-    brand: "Samsung",
+    brand: "Apple",
     image: "imageurl",
     stock: 9,
     seller: "5f5237a4c1beb1523fa3dbac",
@@ -77,7 +77,7 @@ const phones = [
   },
   {
     title: "Galaxy s III mini SM-G730V Verizon Cell Phone BLUE",
-    brand: "Samsung",
+    brand: "Oppo",
     image: "imageurl",
     stock: 9,
     seller: "60a548b93e6aa47fb3d4814d",
@@ -160,7 +160,7 @@ const phones = [
   },
   {
     title: "Galaxy S6 Active - Camo Blue (Unlocked)",
-    brand: "Samsung",
+    brand: "Apple",
     image: "imageurl",
     stock: 6,
     seller: "5f5237a4c1beb1523fa3daff",

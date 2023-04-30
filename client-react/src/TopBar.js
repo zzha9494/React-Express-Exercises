@@ -16,6 +16,7 @@ function handleSubmit(e, setSearchResult) {
 function TopBar({
   homePageState,
   setHomePageState,
+  searchResult,
   setSearchResult,
   filter,
   setFilter,
@@ -50,9 +51,12 @@ function TopBar({
               value={filter.brand}
               onChange={(e) => setFilter({ ...filter, brand: e.target.value })}
             >
-              <option value="apple">Apple</option>
-              <option value="banana">Banana</option>
-              <option value="orange">Orange</option>
+              <option value="">All</option>
+              {[...new Set(searchResult.map((item) => item.brand))].map(
+                (item) => (
+                  <option value={item}>{item}</option>
+                )
+              )}
             </select>
           </label>
 
@@ -62,11 +66,18 @@ function TopBar({
               type="range"
               value={filter.price}
               min="0"
-              max="100"
-              step="10"
+              max={
+                Math.ceil(
+                  Math.max.apply(
+                    null,
+                    searchResult.map((item) => item.price)
+                  ) / 10
+                ) * 10
+              }
+              step="50"
               onChange={(e) => setFilter({ ...filter, price: e.target.value })}
             />
-            Max: {filter.price}
+            Max: {filter.price === Infinity ? "Any" : filter.price}
           </label>
         </>
       )}
@@ -86,7 +97,7 @@ function TopBar({
           setLogin(!login);
         }}
       >
-        {!login ? "Sign-in" : "signout"}
+        {!login ? "Sign-in" : "Signout"}
       </button>
 
       {login ? (
