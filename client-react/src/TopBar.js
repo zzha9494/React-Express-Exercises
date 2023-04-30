@@ -1,30 +1,37 @@
 import React, { useState, useEffect } from "react";
 
-function handleSubmit(e) {
+function handleSubmit(e, setSearchResult) {
   e.preventDefault();
 
   const form = e.target;
   const formData = new FormData(form);
 
   // TODO: get result from database
-  fetch("/some-api", { method: form.method, body: formData });
+  fetch("/api/data", { method: form.method, body: formData })
+    .then((response) => response.json())
+    .then((data) => setSearchResult(data))
+    .catch((error) => console.error(error));
 }
 
-function TopBar({ homePageState, setHomePageState }) {
+function TopBar({
+  homePageState,
+  setHomePageState,
+  setSearchResult,
+  filter,
+  setFilter,
+}) {
   const [login, setLogin] = useState(false);
-  const [filter, setFilter] = useState({ brand: "", price: 50 });
 
   useEffect(() => console.log(login ? "log in!" : "log out!"), [login]);
-  useEffect(() => console.log(filter), [filter]);
 
   return (
     <>
       <h1>Old Phone Deals</h1>
-      
+
       <form
         method="post"
         onSubmit={(e) => {
-          handleSubmit(e);
+          handleSubmit(e, setSearchResult);
           setHomePageState(1);
         }}
       >

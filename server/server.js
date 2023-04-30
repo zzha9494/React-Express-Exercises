@@ -8,6 +8,10 @@ app.get("/api/data", (req, res) => {
   res.json(phones);
 });
 
+app.post("/api/data", (req, res) => {
+  res.json(phones);
+});
+
 app.listen(8000, () => console.log("Server is running on port 8000"));
 
 // test data
