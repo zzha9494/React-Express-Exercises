@@ -14,8 +14,8 @@ function handleSubmit(e, setSearchResult) {
 }
 
 function TopBar({
-  homePageState,
-  setHomePageState,
+  mainPageState,
+  setMainPageState,
   searchResult,
   setSearchResult,
   filter,
@@ -33,7 +33,7 @@ function TopBar({
         method="post"
         onSubmit={(e) => {
           handleSubmit(e, setSearchResult);
-          setHomePageState(1);
+          setMainPageState(1);
         }}
       >
         <label>
@@ -43,7 +43,7 @@ function TopBar({
         <button type="submit">Search</button>
       </form>
 
-      {homePageState !== 1 ? null : (
+      {mainPageState !== 1 ? null : (
         <>
           <label>
             Result Brand:

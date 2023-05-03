@@ -5,29 +5,35 @@ import SearchState from "./SearchState";
 import ItemState from "./ItemState";
 
 function App() {
-  const [homePageState, setHomePageState] = useState(0);
+  const [mainPageState, setMainPageState] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [filter, setFilter] = useState({ brand: "", price: Infinity });
+  const [item, setItem] = useState({});
 
-  useEffect(() => console.log(filter), [filter]);
+  useEffect(() => console.log(item), [item]);
 
   return (
     <>
       <TopBar
-        homePageState={homePageState}
-        setHomePageState={setHomePageState}
+        mainPageState={mainPageState}
+        setMainPageState={setMainPageState}
         searchResult={searchResult}
         setSearchResult={setSearchResult}
         filter={filter}
         setFilter={setFilter}
       />
       <br />
-      {homePageState === 0 ? (
+      {mainPageState === 0 ? (
         <HomeState />
-      ) : homePageState === 1 ? (
-        <SearchState searchResult={searchResult} filter={filter} />
+      ) : mainPageState === 1 ? (
+        <SearchState
+          searchResult={searchResult}
+          filter={filter}
+          setMainPageState={setMainPageState}
+          setItem={setItem}
+        />
       ) : (
-        <ItemState />
+        <ItemState setMainPageState={setMainPageState} item={item} />
       )}
     </>
   );

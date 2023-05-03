@@ -13,4 +13,14 @@ controller.getFive = (req, res) => {
     });
 };
 
+controller.getPhone = (req, res) => {
+  const id = req.query.id;
+
+  const data = {
+    id: {id},
+  };
+
+  res.json(data)
+};
+
 export default controller;

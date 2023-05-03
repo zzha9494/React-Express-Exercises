@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function SearchState({ searchResult, filter }) {
+function SearchState({ searchResult, filter, setMainPageState, setItem }) {
   return (
     <ol>
       {searchResult
@@ -10,14 +10,31 @@ function SearchState({ searchResult, filter }) {
             item.price <= filter.price
         )
         .map((item) => (
-          <li>
-            <img src={`../public/images/${item.image}.jpeg`} alt="Phone" />
+          <li
+            key={item._id}
+            data-id={item._id}
+            onClick={(e) => {
+              setMainPageState(2);
+              handleClick(e, setItem);
+            }}
+          >
+            <img src={`/images/${item.image}.jpeg`} alt="Phone" />
             {item.price}
           </li>
         ))}
     </ol>
   );
-  // return ("this is search");
 }
+
+const handleClick = (e, setItem) => {
+  const id = e.currentTarget.getAttribute("data-id");
+
+  fetch(`/api/getPhone?id=${id}`, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((data) => setItem(data))
+    .catch((error) => console.error(error));
+};
 
 export default SearchState;

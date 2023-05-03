@@ -23,8 +23,8 @@ function SoldOutSoon() {
   return (
     <ol>
       {SOSlist.map((item) => (
-        <li>
-          <img src={`../public/images/${item.image}.jpeg`} alt="Phone" />
+        <li key={item._id}>
+          <img src={`/images/${item.image}.jpeg`} alt="Phone" />
           {item.price}
         </li>
       ))}
@@ -46,8 +46,8 @@ function BestSellers() {
   return (
     <ol>
       {BSlist.map((item) => (
-        <li>
-          <img src={`../public/images/${item.image}.jpeg`} alt="Phone" />
+        <li key={item._id}>
+          <img src={`/images/${item.image}.jpeg`} alt="Phone" />
           {item.price}
         </li>
       ))}
