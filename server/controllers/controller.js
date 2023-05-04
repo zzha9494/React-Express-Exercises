@@ -16,11 +16,22 @@ controller.getFive = (req, res) => {
 controller.getPhone = (req, res) => {
   const id = req.query.id;
 
-  const data = {
-    id: {id},
-  };
-
-  res.json(data)
+  Phone.findById(id)
+    .populate({
+      path: "seller",
+      select: "firstname lastname",
+    })
+    .populate({
+      path: "reviews.reviewer",
+      model: "User",
+      select: "firstname lastname",
+    })
+    .then((phone) => {
+      res.json(phone);
+    })
+    .catch((e) => {
+      console.log("Query error:", err);
+    });
 };
 
 export default controller;
