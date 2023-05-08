@@ -4,7 +4,7 @@ import HomeState from "./HomeState";
 import SearchState from "./SearchState";
 import ItemState from "./ItemState";
 
-function App() {
+function Main() {
   const [mainPageState, setMainPageState] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [filter, setFilter] = useState({ brand: "", price: Infinity });
@@ -39,4 +39,4 @@ function App() {
   );
 }
 
-export default App;
+export default Main;
