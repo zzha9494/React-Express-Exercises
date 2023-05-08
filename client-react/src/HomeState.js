@@ -12,9 +12,8 @@ function HomeState() {
 function SoldOutSoon() {
   const [SOSlist, setSOSlist] = useState([]);
 
-  // TODO
   useEffect(() => {
-    fetch("/api/data")
+    fetch("/api/getSoldOutSoon")
       .then((response) => response.json())
       .then((data) => setSOSlist(data))
       .catch((error) => console.error(error));
@@ -35,9 +34,8 @@ function SoldOutSoon() {
 function BestSellers() {
   const [BSlist, setBSlist] = useState([]);
 
-  // TODO
   useEffect(() => {
-    fetch("/api/data")
+    fetch("/api/getBestSellers")
       .then((response) => response.json())
       .then((data) => setBSlist(data))
       .catch((error) => console.error(error));

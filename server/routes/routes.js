@@ -3,9 +3,12 @@ import controller from "../controllers/controller.js";
 
 const router = express.Router();
 
-router.get("/data", controller.getFive);
-router.post("/data", controller.getFive);
+router.get("/getSoldOutSoon", controller.getSoldOutSoon);
+router.get("/getBestSellers", controller.getBestSellers);
 
+// test
+router.post("/data", controller.getSoldOutSoon);
 router.get("/getPhone", controller.getPhone);
+// test
 
 export default router;
