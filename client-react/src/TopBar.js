@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function handleSubmit(e, setSearchResult) {
   e.preventDefault();
@@ -84,31 +85,57 @@ function TopBar({
 
       <br />
 
-      <button
-        onClick={() => {
-          console.log("Redirect to Checkout page.");
-        }}
-      >
-        checkout
-      </button>
+      <Link to={"/checkout"}>
+        <button
+          onClick={() => {
+            console.log("Redirect to Checkout page.");
+          }}
+        >
+          Checkout
+        </button>
+      </Link>
 
+      {!login ? (
+        <Link to={"/login"}>
+          <button
+            onClick={() => {
+              setLogin(!login);
+            }}
+          >
+            Sign-in
+          </button>
+        </Link>
+      ) : (
+        <button
+          onClick={() => {
+            setLogin(!login);
+          }}
+        >
+          Sign-out
+        </button>
+      )}
+
+      {login ? (
+        <Link to={"/profile"}>
+          <button
+            onClick={() => {
+              console.log("Redirect to Profile page.");
+            }}
+          >
+            Profile
+          </button>
+        </Link>
+      ) : null}
+
+      {/* // test button for switch login status, to be delete */}
       <button
         onClick={() => {
           setLogin(!login);
         }}
       >
-        {!login ? "Sign-in" : "Signout"}
+        Switch login status
       </button>
-
-      {login ? (
-        <button
-          onClick={() => {
-            console.log("Redirect to Profile page");
-          }}
-        >
-          Profile
-        </button>
-      ) : null}
+      {/* // test button for switch login status, to be delete */}
     </>
   );
 }
