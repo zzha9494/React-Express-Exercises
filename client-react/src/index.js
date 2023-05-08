@@ -2,13 +2,31 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import Main from "./Main";
 import ErrorPage from "./ErrorPage";
+import Main from "./Main";
+import Checkout from "./Checkout";
+import Login from "./Login";
+import Profile from "./Profile";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/checkout",
+    element: <Checkout />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
     errorElement: <ErrorPage />,
   },
 ]);
