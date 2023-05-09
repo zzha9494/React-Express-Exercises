@@ -1,0 +1,25 @@
+
+<form>
+    <div>
+        <lable for= "usename">User name</label>
+        <input type = "text" name = "username"/>
+    </div>
+    <div>
+        <lable for= "password">Password</label>
+        <input type = "text" name = "password"/>
+    </div>
+</form>
+<div>
+    <input type = "submit" class = "form-submit" value = "login" id = "login">
+
+<script>
+    $('login').click(function(){
+        $ajax({type:'post',url:'/login',data:$('form').serialize()}).then(function(res){
+            if(res.msg == 'ok'){
+                location.hres = './index.html'
+            }else{
+                alert("wrong password")
+            }
+        })
+    })
+    </script>
