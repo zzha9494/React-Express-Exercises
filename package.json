@@ -9,11 +9,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.sydney.edu.au/COMP5347-COMP4347-2023/Lab07-Wed-Group02.git"
+    "url": "https://github.sydney.edu.au/COMP5347-COMP4347-2023/-Lab07-Wed-Group07-A1.git"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express-session": "^1.17.3"
-  }
+  "license": "ISC"
 }

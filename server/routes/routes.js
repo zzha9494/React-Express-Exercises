@@ -1,6 +1,7 @@
 import express from "express";
 import controller from "../controllers/controller.js";
 import session from 'express-session'
+
 const router = express.Router();
 
 router.get("/getSoldOutSoon", controller.getSoldOutSoon);
