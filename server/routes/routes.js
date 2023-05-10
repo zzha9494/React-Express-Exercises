@@ -16,9 +16,6 @@ router.use(session({
     })
 }))
 
-router.get("/data", controller.getFive);
-router.post("/data", controller.getFive);
-
 // test
 router.post("/data", controller.getSoldOutSoon);
 router.get("/getPhone", controller.getPhone);
