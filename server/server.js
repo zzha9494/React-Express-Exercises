@@ -1,10 +1,30 @@
 import express from "express";
 import router from "./routes/routes.js";
 import path from "path";
+import session from "express-session";
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("../client-react/build"));
+
+// TODO: session
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie:
+      ("name",
+      "value",
+      {
+        maxAge: 5 * 60 * 1000,
+        secure: false,
+      }),
+  })
+);
+
 app.use("/api", router);
 
 app.get("*", (req, res) => {

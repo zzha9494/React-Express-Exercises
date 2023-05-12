@@ -4,11 +4,10 @@ import { Link } from "react-router-dom";
 function handleSubmit(e, setSearchResult) {
   e.preventDefault();
 
-  const form = e.target;
-  const formData = new FormData(form);
+  const data = new URLSearchParams(new FormData(e.target));
 
   // TODO: get result from database
-  fetch("/api/data", { method: form.method, body: formData })
+  fetch("/api/data", { method: e.target.method, body: data })
     .then((response) => response.json())
     .then((data) => setSearchResult(data))
     .catch((error) => console.error(error));
