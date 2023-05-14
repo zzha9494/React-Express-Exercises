@@ -38,22 +38,6 @@ function submitSignup(e) {
     .catch((error) => console.error(error));
 }
 
-function handleSubmit(e) {
-  e.preventDefault();
-  const data = new URLSearchParams(new FormData(e.target));
-
-  fetch("/api/login", { method: e.target.method, body: data })
-    .then((res) => {
-      if (res.msg == "ok") {
-        alert("OK");
-        // set user id here
-      } else {
-        alert("wrong password");
-      }
-    })
-    .catch((error) => console.error(error));
-}
-
 function Login() {
   const [showLogin, setShowLogin] = useState(true);
   return (
