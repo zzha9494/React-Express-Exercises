@@ -1,6 +1,8 @@
 import { Phone, User } from "../models/dataModel.js";
+import bcrypt from "bcrypt";
 
 const controller = {};
+const saltRounds = 10;
 
 controller.getSoldOutSoon = (req, res) => {
   Phone.find(
@@ -59,46 +61,66 @@ controller.getBestSellers = (req, res) => {
     });
 };
 
-// test
-// not work
-controller.checkpswd = (req, res) => {
-  // let useremail = req.body.email,
-  //   pswd = req.body.password;
-  // //TODO : database check
+controller.signup = (req, res) => {
+  const { firstname, lastname, email, password } = req.body;
 
-  console.log(req.body)
+  User.findOne({ email }).then((result) => {
+    if (result) {
+      return res.status(409).json({ message: "Email already in use" });
+    }
 
-  // var userdata;
-  // var checked = true;
+    bcrypt
+      .hash(password, saltRounds)
+      .then((hash) => {
+        const newUser = new User({
+          firstname,
+          lastname,
+          email,
+          password: hash,
+        });
 
-  // User.findOne({ email: useremail, password: pswd }, function (err, res) {
-  //   if (err) {
-  //     checked = false;
-  //   } else {
-  //     userdata = res;
-  //   }
-  // });
-
-  // if (checked) {
-  //   req.session.userinfo = userdata.id;
-  //   res.send({ code: 0, msg: "ok" });
-  // } else {
-  //   res.send({ code: 1, msg: "error" });
-  // }
+        newUser
+          .save()
+          .then(() => {
+            res.status(201).json({ message: "User created successfully" });
+          })
+          .catch(() => {
+            res.status(500).json({ message: "Internal server error" });
+          });
+      })
+      .catch(() => {
+        res.status(500).json({ message: "Internal server error" });
+      });
+  });
 };
 
-controller.checklogin = (req, res) => {
-  console.log("checking login");
-  if (req.session.userinfo) {
-    var user = req.session.userinfo;
-    res.send({
-      code: 0,
-    });
-  } else {
-    res.send('alert("login first!");location.href = "./login.html"');
-  }
+controller.login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email }).then((user) => {
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    bcrypt
+      .compare(password, user.password)
+      .then((result) => {
+        if (result) {
+          // return token or id
+          // const token = jwt.sign({ userId: user._id }, secretKey);
+          const token = "this is token";
+          return res.status(200).json({ token });
+        } else {
+          return res.status(401).json({ message: "Invalid email or password" });
+        }
+      })
+      .catch(() => {
+        res.status(500).json({ message: "Internal server error" });
+      });
+  });
 };
 
+// test below
 controller.getPhone = (req, res) => {
   const id = req.query.id;
 
@@ -119,6 +141,6 @@ controller.getPhone = (req, res) => {
       console.log("Query error:", err);
     });
 };
-// test
+// test above
 
 export default controller;
