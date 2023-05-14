@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import jwt_decode from "jwt-decode";
 
 function submitLogin(e) {
   e.preventDefault();
@@ -8,7 +9,7 @@ function submitLogin(e) {
     .then((res) => {
       if (res.status == 200) {
         res.json().then((data) => {
-          alert(data.token);
+          alert(jwt_decode(data.token).userId);
         });
       } else {
         res.json().then((data) => {

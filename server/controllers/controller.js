@@ -1,5 +1,6 @@
 import { Phone, User } from "../models/dataModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const controller = {};
 const saltRounds = 10;
@@ -106,9 +107,7 @@ controller.login = (req, res) => {
       .compare(password, user.password)
       .then((result) => {
         if (result) {
-          // return token or id
-          // const token = jwt.sign({ userId: user._id }, secretKey);
-          const token = "this is token";
+          const token = jwt.sign({ userId: user._id }, "Zijie Zhao");
           return res.status(200).json({ token });
         } else {
           return res.status(401).json({ message: "Invalid email or password" });
