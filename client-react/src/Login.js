@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
-function submitLogin(e) {
+function submitLogin(e, navigate) {
   e.preventDefault();
   const data = new URLSearchParams(new FormData(e.target));
 
@@ -9,7 +9,10 @@ function submitLogin(e) {
     .then((res) => {
       if (res.status == 200) {
         res.json().then((data) => {
-          alert(jwt_decode(data.token).userId);
+          // alert(jwt_decode(data.token).userId);
+          localStorage.setItem("token", data.token);
+          alert(data.message);
+          navigate("/");
         });
       } else {
         res.json().then((data) => {
@@ -20,7 +23,7 @@ function submitLogin(e) {
     .catch((error) => console.error(error));
 }
 
-function submitSignup(e) {
+function submitSignup(e, navigate) {
   e.preventDefault();
   const data = new URLSearchParams(new FormData(e.target));
 
@@ -28,7 +31,9 @@ function submitSignup(e) {
     .then((res) => {
       if (res.status == 201) {
         res.json().then((data) => {
+          localStorage.setItem("token", data.token);
           alert(data.message);
+          navigate("/");
         });
       } else {
         res.json().then((data) => {
@@ -41,7 +46,11 @@ function submitSignup(e) {
 
 function Login() {
   const [showLogin, setShowLogin] = useState(true);
-  return (
+  const navigate = useNavigate();
+
+  return localStorage.getItem("token") ? (
+    <h1>Please log out first</h1>
+  ) : (
     <>
       <button
         onClick={() => {
@@ -57,7 +66,7 @@ function Login() {
         <form
           method="post"
           onSubmit={(e) => {
-            submitLogin(e);
+            submitLogin(e, navigate);
           }}
         >
           <label>
@@ -74,7 +83,7 @@ function Login() {
         <form
           method="post"
           onSubmit={(e) => {
-            submitSignup(e);
+            submitSignup(e, navigate);
           }}
         >
           <label>

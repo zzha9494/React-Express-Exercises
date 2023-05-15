@@ -83,7 +83,10 @@ controller.signup = (req, res) => {
         newUser
           .save()
           .then(() => {
-            res.status(201).json({ message: "User created successfully" });
+            const token = jwt.sign({ userId: newUser._id }, "Zijie Zhao");
+            res
+              .status(201)
+              .json({ message: "User created successfully", token });
           })
           .catch(() => {
             res.status(500).json({ message: "Internal server error" });
@@ -108,7 +111,7 @@ controller.login = (req, res) => {
       .then((result) => {
         if (result) {
           const token = jwt.sign({ userId: user._id }, "Zijie Zhao");
-          return res.status(200).json({ token });
+          return res.status(200).json({ message: "Login successfully", token });
         } else {
           return res.status(401).json({ message: "Invalid email or password" });
         }

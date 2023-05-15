@@ -108,6 +108,7 @@ function TopBar({
         <button
           onClick={() => {
             setLogin(!login);
+            localStorage.removeItem("token");
           }}
         >
           Sign-out
