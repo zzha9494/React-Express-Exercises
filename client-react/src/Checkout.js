@@ -113,19 +113,28 @@ function Checkout() {
                 quantity: newCart[_id].quantity,
               }));
 
-              fetch("/api/checkout", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-              })
-                .then((response) => {
-                  console.log("Checkout successful:", response.data);
+              if (data.length === 0) {
+                alert("Empty cart!");
+              } else {
+                fetch("/api/checkout", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
                 })
-                .catch((error) => {
-                  console.error("Error during checkout:", error);
-                });
+                  .then((res) => {
+                    if (res.status == 200) {
+                      setNewCart({});
+                    }
+                    res.json().then((data) => {
+                      alert(data.message);
+                    });
+                  })
+                  .catch((error) => {
+                    console.error("Error during checkout:", error);
+                  });
+              }
             }}
           >
             Confirm

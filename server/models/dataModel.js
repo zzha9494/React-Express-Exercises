@@ -57,7 +57,7 @@ const phoneSchema = new mongoose.Schema({
         required: true,
       },
       hidden: {
-        type: Boolean,
+        type: String,
         default: false,
       },
     },

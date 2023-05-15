@@ -5,6 +5,35 @@ import jwt from "jsonwebtoken";
 const controller = {};
 const saltRounds = 10;
 
+controller.checkout = (req, res) => {
+  const data = req.body;
+
+  const updatePromises = data.map((item) => {
+    const { _id, quantity } = item;
+
+    return Phone.findById(_id)
+      .then((phone) => {
+        if (phone) {
+          phone.stock -= quantity;
+          phone.save();
+        }
+      })
+      .catch((error) => {
+        console.error(`Error updating stock for phone with ID ${_id}:`, error);
+      });
+  });
+
+  Promise.all(updatePromises)
+    .then(() => {
+      res.status(200).json({ message: "Transcation comfirmed successfully." });
+      console.log("Update successfully.");
+    })
+    .catch((error) => {
+      console.error("Error updating stock:", error);
+      res.status(500).json({ message: "Error." });
+    });
+};
+
 controller.searchByTitle = (req, res) => {
   const title = req.query.title;
 
