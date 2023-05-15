@@ -49,10 +49,13 @@ function Main() {
         />
       ) : (
         <ItemState
+          mainPageState={mainPageState}
           setMainPageState={setMainPageState}
           item={item}
           cart={cart}
           setCart={setCart}
+          searchResult={searchResult}
+          filter={filter}
         />
       )}
     </>

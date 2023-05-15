@@ -1,6 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-function ItemState({ setMainPageState, item, cart, setCart }) {
+function ItemState({
+  mainPageState,
+  setMainPageState,
+  item,
+  cart,
+  setCart,
+  searchResult,
+  filter,
+}) {
+  const navigate = useNavigate();
+
   return (
     <>
       <button
@@ -44,6 +55,14 @@ function ItemState({ setMainPageState, item, cart, setCart }) {
         onClick={() => {
           if (!localStorage.getItem("token")) {
             alert("Please login first.");
+            navigate("/login", {
+              state: {
+                mainPageState,
+                searchResult,
+                filter,
+                item,
+              },
+            });
           } else {
             let quantity = prompt("Please update the quantity:", 1);
             quantity = parseInt(quantity.trim());

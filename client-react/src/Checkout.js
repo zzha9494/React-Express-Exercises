@@ -4,7 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 function Checkout() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { cart, mainPageState, searchResult, filter, item } = state;
+  const { cart, mainPageState, searchResult, filter, item } = state ?? {
+    cart: {},
+  };
 
   const [newCart, setNewCart] = useState(
     Object.fromEntries(
@@ -126,7 +128,7 @@ function Checkout() {
                   .then((res) => {
                     if (res.status == 200) {
                       setNewCart({});
-                      navigate("/")
+                      navigate("/");
                     }
                     res.json().then((data) => {
                       alert(data.message);

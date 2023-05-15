@@ -1,52 +1,67 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-function submitLogin(e, navigate) {
-  e.preventDefault();
-  const data = new URLSearchParams(new FormData(e.target));
-
-  fetch("/api/login", { method: e.target.method, body: data })
-    .then((res) => {
-      if (res.status == 200) {
-        res.json().then((data) => {
-          // alert(jwt_decode(data.token).userId);
-          localStorage.setItem("token", data.token);
-          alert(data.message);
-          navigate("/");
-        });
-      } else {
-        res.json().then((data) => {
-          alert(data.message);
-        });
-      }
-    })
-    .catch((error) => console.error(error));
-}
-
-function submitSignup(e, navigate) {
-  e.preventDefault();
-  const data = new URLSearchParams(new FormData(e.target));
-
-  fetch("/api/signup", { method: e.target.method, body: data })
-    .then((res) => {
-      if (res.status == 201) {
-        res.json().then((data) => {
-          localStorage.setItem("token", data.token);
-          alert(data.message);
-          navigate("/");
-        });
-      } else {
-        res.json().then((data) => {
-          alert(data.message);
-        });
-      }
-    })
-    .catch((error) => console.error(error));
-}
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
   const [showLogin, setShowLogin] = useState(true);
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const { mainPageState, searchResult, filter, item } = state ?? {};
+
+  const submitLogin = (e) => {
+    e.preventDefault();
+    const data = new URLSearchParams(new FormData(e.target));
+
+    fetch("/api/login", { method: e.target.method, body: data })
+      .then((res) => {
+        if (res.status == 200) {
+          res.json().then((data) => {
+            localStorage.setItem("token", data.token);
+            alert(data.message);
+            navigate("/", {
+              state: {
+                preMainPageState: mainPageState,
+                preSearchResult: searchResult,
+                preFilter: filter,
+                preItem: item,
+              },
+            });
+          });
+        } else {
+          res.json().then((data) => {
+            alert(data.message);
+          });
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const submitSignup = (e) => {
+    e.preventDefault();
+    const data = new URLSearchParams(new FormData(e.target));
+
+    fetch("/api/signup", { method: e.target.method, body: data })
+      .then((res) => {
+        if (res.status == 201) {
+          res.json().then((data) => {
+            localStorage.setItem("token", data.token);
+            alert(data.message);
+            navigate("/", {
+              state: {
+                preMainPageState: mainPageState,
+                preSearchResult: searchResult,
+                preFilter: filter,
+                preItem: item,
+              },
+            });
+          });
+        } else {
+          res.json().then((data) => {
+            alert(data.message);
+          });
+        }
+      })
+      .catch((error) => console.error(error));
+  };
 
   return localStorage.getItem("token") ? (
     <h1>Please log out first</h1>
@@ -63,12 +78,7 @@ function Login() {
       <br />
 
       {showLogin ? (
-        <form
-          method="post"
-          onSubmit={(e) => {
-            submitLogin(e, navigate);
-          }}
-        >
+        <form method="post" onSubmit={(e) => submitLogin(e)}>
           <label>
             Email
             <input
@@ -94,12 +104,7 @@ function Login() {
           <button type="submit">Log in</button>
         </form>
       ) : (
-        <form
-          method="post"
-          onSubmit={(e) => {
-            submitSignup(e, navigate);
-          }}
-        >
+        <form method="post" onSubmit={(e) => submitSignup(e)}>
           <label>
             Firstname:
             <input name="firstname" pattern="[A-Za-z]{1,}" size="30" required />

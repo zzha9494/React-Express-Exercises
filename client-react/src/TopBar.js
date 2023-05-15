@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function searchByTitle(e, setSearchResult) {
   e.preventDefault();
@@ -113,15 +113,21 @@ function TopBar({
       ) : null}
 
       {!login ? (
-        <Link to={"/login"}>
-          <button
-            onClick={() => {
-              setLogin(!login);
-            }}
-          >
-            Sign-in
-          </button>
-        </Link>
+        <button
+          onClick={() => {
+            setLogin(!login);
+            navigate("/login", {
+              state: {
+                mainPageState,
+                searchResult,
+                filter,
+                item,
+              },
+            });
+          }}
+        >
+          Sign-in
+        </button>
       ) : (
         <button
           onClick={() => {
