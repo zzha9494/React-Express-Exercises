@@ -18,7 +18,11 @@ function ItemState({ setMainPageState, item }) {
           Image: <img src={`/images/${item.image}.jpeg`} alt="Phone" />
         </li>
         <li>Stock: {item.stock}</li>
-        <li>Seller: {item.seller}</li>
+        <li>
+          Seller:
+          {item.seller && `${item.seller.firstname} ${item.seller.lastname}`}
+        </li>
+
         <li>Price: {item.price}</li>
         <li>
           {!item.reviews ? (

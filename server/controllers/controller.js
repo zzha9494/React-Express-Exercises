@@ -139,15 +139,15 @@ controller.getPhone = (req, res) => {
   const id = req.query.id;
 
   Phone.findById(id)
-    // .populate({
-    //   path: "seller",
-    //   select: "firstname lastname",
-    // })
-    // .populate({
-    //   path: "reviews.reviewer",
-    //   model: "User",
-    //   select: "firstname lastname",
-    // })
+    .populate({
+      path: "seller",
+      select: "firstname lastname",
+    })
+    .populate({
+      path: "reviews.reviewer",
+      model: "User",
+      select: "firstname lastname",
+    })
     .then((phone) => {
       res.json(phone);
     })
