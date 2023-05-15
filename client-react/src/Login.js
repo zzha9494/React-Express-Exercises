@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
   const [showLogin, setShowLogin] = useState(true);
+  const [showReset, setShowReset] = useState(false);
   const navigate = useNavigate();
   const { state } = useLocation();
   const { mainPageState, searchResult, filter, item } = state ?? {};
@@ -70,6 +71,7 @@ function Login() {
       <button
         onClick={() => {
           setShowLogin(!showLogin);
+          setShowReset(false);
         }}
       >
         {!showLogin ? "Go to Log in" : "Go to Sign up"}
@@ -77,7 +79,7 @@ function Login() {
 
       <br />
 
-      {showLogin ? (
+      {showLogin && (
         <form method="post" onSubmit={(e) => submitLogin(e)}>
           <label>
             Email
@@ -103,42 +105,91 @@ function Login() {
 
           <button type="submit">Log in</button>
         </form>
-      ) : (
-        <form method="post" onSubmit={(e) => submitSignup(e)}>
-          <label>
-            Firstname:
-            <input name="firstname" pattern="[A-Za-z]{1,}" size="30" required />
-          </label>
+      )}
 
-          <label>
-            Lastname:
-            <input name="lastname" pattern="[A-Za-z]{1,}" size="30" required />
-          </label>
+      {!showLogin && !showReset && (
+        <>
+          <form method="post" onSubmit={(e) => submitSignup(e)}>
+            <label>
+              Firstname:
+              <input
+                name="firstname"
+                pattern="[A-Za-z]{1,}"
+                size="30"
+                required
+              />
+            </label>
 
-          <label>
-            Email:
-            <input
-              type="email"
-              name="email"
-              pattern="([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})"
-              size="30"
-              required
-            />
-          </label>
+            <label>
+              Lastname:
+              <input
+                name="lastname"
+                pattern="[A-Za-z]{1,}"
+                size="30"
+                required
+              />
+            </label>
 
-          <label>
-            Password:
-            <input
-              type="password"
-              name="password"
-              // pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{6,}$"
-              size="30"
-              required
-            />
-          </label>
+            <label>
+              Email:
+              <input
+                type="email"
+                name="email"
+                pattern="([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})"
+                size="30"
+                required
+              />
+            </label>
 
-          <button type="submit">Sign up</button>
-        </form>
+            <label>
+              Password:
+              <input
+                type="password"
+                name="password"
+                // pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{6,}$"
+                size="30"
+                required
+              />
+            </label>
+
+            <button type="submit">Sign up</button>
+          </form>
+
+          <br />
+
+          <button onClick={() => setShowReset(!showReset)}>
+            Reset password
+          </button>
+        </>
+      )}
+
+      {showReset && (
+        <>
+          <form
+            method="post"
+            onSubmit={(e) => {
+              e.preventDefault();
+              // TODO: reset password
+            }}
+          >
+            <label>
+              Email
+              <input
+                type="email"
+                name="email"
+                pattern="([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})"
+                size="30"
+                required
+              />
+            </label>
+
+            <button type="submit">Reset</button>
+          </form>
+
+          <br />
+
+          <button onClick={() => setShowReset(!showReset)}>Back</button>
+        </>
       )}
     </>
   );
