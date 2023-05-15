@@ -126,6 +126,7 @@ function Checkout() {
                   .then((res) => {
                     if (res.status == 200) {
                       setNewCart({});
+                      navigate("/")
                     }
                     res.json().then((data) => {
                       alert(data.message);

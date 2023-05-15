@@ -135,15 +135,13 @@ function TopBar({
       )}
 
       {login ? (
-        <Link to={"/profile"}>
-          <button
-            onClick={() => {
-              console.log("Redirect to Profile page.");
-            }}
-          >
-            Profile
-          </button>
-        </Link>
+        <button
+          onClick={() => {
+            navigate("/profile");
+          }}
+        >
+          Profile
+        </button>
       ) : null}
     </>
   );
