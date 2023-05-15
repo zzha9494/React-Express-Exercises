@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function Checkout() {
@@ -12,23 +12,36 @@ function Checkout() {
     )
   );
 
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    let total = 0;
+    Object.keys(newCart).forEach((_id) => {
+      const { price, quantity } = newCart[_id];
+      total += price * quantity;
+    });
+    setTotalPrice(total);
+  }, [newCart]);
+
   const deleteItem = (_id) => {
     const updatedCart = { ...newCart };
     delete updatedCart[_id];
     setNewCart(updatedCart);
   };
 
+  const updateItem = (_id, quantity) => {
+    if (quantity == 0) {
+      deleteItem(_id);
+    } else {
+      const updatedCart = { ...newCart };
+      updatedCart[_id].quantity = quantity;
+      setNewCart(updatedCart);
+    }
+  };
+
   return (
     <>
       <h1>Checkout Page</h1>
-
-      <button
-        onClick={() => {
-          console.log(newCart);
-        }}
-      >
-        test
-      </button>
 
       <button
         onClick={(e) => {
@@ -65,7 +78,19 @@ function Checkout() {
               <td>{newCart[_id].price}</td>
               <td>{newCart[_id].quantity}</td>
               <td>
-                <button>Modify</button>
+                <button
+                  onClick={() => {
+                    let quantity = prompt("Please update the quantity:", 1);
+                    quantity = parseInt(quantity.trim());
+                    if (quantity >= 0 && quantity <= newCart[_id].stock) {
+                      updateItem(_id, quantity);
+                    } else {
+                      alert("Invalid! Check the available stock!");
+                    }
+                  }}
+                >
+                  Modify
+                </button>
               </td>
               <td>
                 <button onClick={() => deleteItem(_id)}>Remove</button>
@@ -74,6 +99,18 @@ function Checkout() {
           ))}
         </tbody>
       </table>
+
+      <br />
+
+      <p>Total Price: {totalPrice}</p>
+
+      <button
+        onClick={() => {
+          console.log(newCart);
+        }}
+      >
+        Confirm
+      </button>
     </>
   );
 }

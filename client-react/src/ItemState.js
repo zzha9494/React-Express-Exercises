@@ -51,6 +51,7 @@ function ItemState({ setMainPageState, item, cart, setCart }) {
                 title: item.title,
                 price: item.price,
                 quantity: quantity,
+                stock: item.stock,
               },
             });
           } else {
