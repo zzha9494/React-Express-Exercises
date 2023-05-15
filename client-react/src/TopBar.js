@@ -131,9 +131,12 @@ function TopBar({
       ) : (
         <button
           onClick={() => {
-            setLogin(!login);
-            localStorage.removeItem("token");
-            setCart({});
+            if (window.confirm("Sign out?")) {
+              setLogin(!login);
+              localStorage.removeItem("token");
+              setMainPageState(0);
+              setCart({});
+            }
           }}
         >
           Sign-out

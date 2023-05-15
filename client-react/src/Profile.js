@@ -14,8 +14,10 @@ function Profile() {
         <>
           <button
             onClick={() => {
-              localStorage.removeItem("token");
-              navigate("/");
+              if (window.confirm("Sign out?")) {
+                localStorage.removeItem("token");
+                navigate("/");
+              }
             }}
           >
             Sign-out
