@@ -9,6 +9,7 @@ function Main() {
   const [searchResult, setSearchResult] = useState([]);
   const [filter, setFilter] = useState({ brand: "", price: Infinity });
   const [item, setItem] = useState({});
+  const [cart, setCart] = useState(["test this is a cart"]);
 
   useEffect(() => console.log(item), [item]);
 
@@ -21,6 +22,7 @@ function Main() {
         setSearchResult={setSearchResult}
         filter={filter}
         setFilter={setFilter}
+        cart={cart}
       />
       <br />
       {mainPageState === 0 ? (

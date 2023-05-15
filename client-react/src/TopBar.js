@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function searchByTitle(e, setSearchResult) {
   e.preventDefault();
@@ -26,10 +26,12 @@ function TopBar({
   setSearchResult,
   filter,
   setFilter,
+  cart,
 }) {
   const [login, setLogin] = useState(
     localStorage.getItem("token") ? true : false
   );
+  const navigate = useNavigate();
 
   return (
     <>
@@ -90,15 +92,13 @@ function TopBar({
 
       <br />
 
-      <Link to={"/checkout"}>
-        <button
-          onClick={() => {
-            console.log("Redirect to Checkout page.");
-          }}
-        >
-          Checkout
-        </button>
-      </Link>
+      <button
+        onClick={(e) => {
+          navigate("/checkout", { state: { cart } });
+        }}
+      >
+        Checkout
+      </button>
 
       {!login ? (
         <Link to={"/login"}>
