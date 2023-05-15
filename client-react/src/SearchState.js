@@ -18,8 +18,13 @@ function SearchState({ searchResult, filter, setMainPageState, setItem }) {
               handleClick(e, setItem);
             }}
           >
-            <img src={`/images/${item.image}.jpeg`} alt="Phone" />
-            {item.price}
+            <ul>
+              <li>
+                <img src={`/images/${item.image}.jpeg`} alt="Phone" />
+              </li>
+              <li>Title: {item.title}</li>
+              <li>Price: {item.price}</li>
+            </ul>
           </li>
         ))}
     </ol>

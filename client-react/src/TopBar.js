@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-function handleSubmit(e, setSearchResult) {
+function searchByTitle(e, setSearchResult) {
   e.preventDefault();
+  const title = e.target.elements.title.value;
 
-  const data = new URLSearchParams(new FormData(e.target));
+  const sanitizeTitle = (title) => {
+    let sanitizedTitle = title.trim().toLowerCase();
+    sanitizedTitle = sanitizedTitle.replace(/<[^>]+>/g, "");
+    return sanitizedTitle;
+  };
 
-  // TODO: get result from database
-  fetch("/api/data", { method: e.target.method, body: data })
+  fetch(`/api/searchByTitle?title=${sanitizeTitle(title)}`, {
+    method: e.target.method,
+  })
     .then((response) => response.json())
     .then((data) => setSearchResult(data))
     .catch((error) => console.error(error));
@@ -30,9 +36,9 @@ function TopBar({
       <h1>Old Phone Deals</h1>
 
       <form
-        method="post"
+        method="get"
         onSubmit={(e) => {
-          handleSubmit(e, setSearchResult);
+          searchByTitle(e, setSearchResult);
           setMainPageState(1);
         }}
       >
