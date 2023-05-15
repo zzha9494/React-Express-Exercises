@@ -70,11 +70,25 @@ function Login() {
           }}
         >
           <label>
-            Email: <input name="email" defaultValue="" />
+            Email
+            <input
+              type="email"
+              name="email"
+              pattern="([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})"
+              size="30"
+              required
+            />
           </label>
 
           <label>
-            Password: <input name="password" defaultValue="" />
+            Password:
+            <input
+              type="password"
+              name="password"
+              // pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{6,}$"
+              size="30"
+              required
+            />
           </label>
 
           <button type="submit">Log in</button>
@@ -87,19 +101,35 @@ function Login() {
           }}
         >
           <label>
-            Firstname: <input name="firstname" defaultValue="" />
+            Firstname:
+            <input name="firstname" pattern="[A-Za-z]{1,}" size="30" required />
           </label>
 
           <label>
-            Lastname: <input name="lastname" defaultValue="" />
+            Lastname:
+            <input name="lastname" pattern="[A-Za-z]{1,}" size="30" required />
           </label>
 
           <label>
-            Email: <input name="email" defaultValue="" />
+            Email:
+            <input
+              type="email"
+              name="email"
+              pattern="([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})"
+              size="30"
+              required
+            />
           </label>
 
           <label>
-            Password: <input name="password" defaultValue="" />
+            Password:
+            <input
+              type="password"
+              name="password"
+              // pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{6,}$"
+              size="30"
+              required
+            />
           </label>
 
           <button type="submit">Sign up</button>
