@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function submitLogin(e) {
+function submitLogin(e, navigate) {
   e.preventDefault();
   const data = new URLSearchParams(new FormData(e.target));
 
@@ -8,7 +9,10 @@ function submitLogin(e) {
     .then((res) => {
       if (res.status == 200) {
         res.json().then((data) => {
-          alert(data.token);
+          // alert(jwt_decode(data.token).userId);
+          localStorage.setItem("token", data.token);
+          alert(data.message);
+          navigate("/");
         });
       } else {
         res.json().then((data) => {
@@ -19,7 +23,7 @@ function submitLogin(e) {
     .catch((error) => console.error(error));
 }
 
-function submitSignup(e) {
+function submitSignup(e, navigate) {
   e.preventDefault();
   const data = new URLSearchParams(new FormData(e.target));
 
@@ -27,7 +31,9 @@ function submitSignup(e) {
     .then((res) => {
       if (res.status == 201) {
         res.json().then((data) => {
+          localStorage.setItem("token", data.token);
           alert(data.message);
+          navigate("/");
         });
       } else {
         res.json().then((data) => {
@@ -40,7 +46,11 @@ function submitSignup(e) {
 
 function Login() {
   const [showLogin, setShowLogin] = useState(true);
-  return (
+  const navigate = useNavigate();
+
+  return localStorage.getItem("token") ? (
+    <h1>Please log out first</h1>
+  ) : (
     <>
       <button
         onClick={() => {
@@ -56,15 +66,29 @@ function Login() {
         <form
           method="post"
           onSubmit={(e) => {
-            submitLogin(e);
+            submitLogin(e, navigate);
           }}
         >
           <label>
-            Email: <input name="email" defaultValue="" />
+            Email
+            <input
+              type="email"
+              name="email"
+              pattern="([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})"
+              size="30"
+              required
+            />
           </label>
 
           <label>
-            Password: <input name="password" defaultValue="" />
+            Password:
+            <input
+              type="password"
+              name="password"
+              // pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{6,}$"
+              size="30"
+              required
+            />
           </label>
 
           <button type="submit">Log in</button>
@@ -73,23 +97,39 @@ function Login() {
         <form
           method="post"
           onSubmit={(e) => {
-            submitSignup(e);
+            submitSignup(e, navigate);
           }}
         >
           <label>
-            Firstname: <input name="firstname" defaultValue="" />
+            Firstname:
+            <input name="firstname" pattern="[A-Za-z]{1,}" size="30" required />
           </label>
 
           <label>
-            Lastname: <input name="lastname" defaultValue="" />
+            Lastname:
+            <input name="lastname" pattern="[A-Za-z]{1,}" size="30" required />
           </label>
 
           <label>
-            Email: <input name="email" defaultValue="" />
+            Email:
+            <input
+              type="email"
+              name="email"
+              pattern="([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})"
+              size="30"
+              required
+            />
           </label>
 
           <label>
-            Password: <input name="password" defaultValue="" />
+            Password:
+            <input
+              type="password"
+              name="password"
+              // pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{6,}$"
+              size="30"
+              required
+            />
           </label>
 
           <button type="submit">Sign up</button>

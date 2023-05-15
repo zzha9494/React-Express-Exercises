@@ -1,5 +1,6 @@
 import { Phone, User } from "../models/dataModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const controller = {};
 const saltRounds = 10;
@@ -82,7 +83,10 @@ controller.signup = (req, res) => {
         newUser
           .save()
           .then(() => {
-            res.status(201).json({ message: "User created successfully" });
+            const token = jwt.sign({ userId: newUser._id }, "Zijie Zhao");
+            res
+              .status(201)
+              .json({ message: "User created successfully", token });
           })
           .catch(() => {
             res.status(500).json({ message: "Internal server error" });
@@ -106,10 +110,8 @@ controller.login = (req, res) => {
       .compare(password, user.password)
       .then((result) => {
         if (result) {
-          // return token or id
-          // const token = jwt.sign({ userId: user._id }, secretKey);
-          const token = "this is token";
-          return res.status(200).json({ token });
+          const token = jwt.sign({ userId: user._id }, "Zijie Zhao");
+          return res.status(200).json({ message: "Login successfully", token });
         } else {
           return res.status(401).json({ message: "Invalid email or password" });
         }
