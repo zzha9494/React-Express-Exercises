@@ -27,6 +27,7 @@ function TopBar({
   filter,
   setFilter,
   cart,
+  setCart,
   item,
 }) {
   const [login, setLogin] = useState(
@@ -93,21 +94,23 @@ function TopBar({
 
       <br />
 
-      <button
-        onClick={(e) => {
-          navigate("/checkout", {
-            state: {
-              cart,
-              mainPageState,
-              searchResult,
-              filter,
-              item,
-            },
-          });
-        }}
-      >
-        Checkout
-      </button>
+      {login ? (
+        <button
+          onClick={(e) => {
+            navigate("/checkout", {
+              state: {
+                cart,
+                mainPageState,
+                searchResult,
+                filter,
+                item,
+              },
+            });
+          }}
+        >
+          Checkout
+        </button>
+      ) : null}
 
       {!login ? (
         <Link to={"/login"}>
@@ -124,6 +127,7 @@ function TopBar({
           onClick={() => {
             setLogin(!login);
             localStorage.removeItem("token");
+            setCart({});
           }}
         >
           Sign-out

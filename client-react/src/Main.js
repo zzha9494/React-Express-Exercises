@@ -34,6 +34,7 @@ function Main() {
         filter={filter}
         setFilter={setFilter}
         cart={cart}
+        setCart={setCart}
         item={item}
       />
       <br />

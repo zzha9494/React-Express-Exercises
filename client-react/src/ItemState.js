@@ -42,20 +42,24 @@ function ItemState({ setMainPageState, item, cart, setCart }) {
 
       <button
         onClick={() => {
-          let quantity = prompt("Please update the quantity:", 1);
-          quantity = parseInt(quantity.trim());
-          if (quantity >= 0 && quantity <= item.stock) {
-            setCart({
-              ...cart,
-              [item._id]: {
-                title: item.title,
-                price: item.price,
-                quantity: quantity,
-                stock: item.stock,
-              },
-            });
+          if (!localStorage.getItem("token")) {
+            alert("Please login first.");
           } else {
-            alert("Invalid! Check the available stock!");
+            let quantity = prompt("Please update the quantity:", 1);
+            quantity = parseInt(quantity.trim());
+            if (quantity >= 0 && quantity <= item.stock) {
+              setCart({
+                ...cart,
+                [item._id]: {
+                  title: item.title,
+                  price: item.price,
+                  quantity: quantity,
+                  stock: item.stock,
+                },
+              });
+            } else {
+              alert("Invalid! Check the available stock!");
+            }
           }
         }}
       >

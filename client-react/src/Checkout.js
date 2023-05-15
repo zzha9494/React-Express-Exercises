@@ -43,74 +43,97 @@ function Checkout() {
     <>
       <h1>Checkout Page</h1>
 
-      <button
-        onClick={(e) => {
-          navigate("/", {
-            state: {
-              preCart: newCart,
-              preMainPageState: mainPageState,
-              preSearchResult: searchResult,
-              preFilter: filter,
-              preItem: item,
-            },
-          });
-        }}
-      >
-        Back
-      </button>
+      {localStorage.getItem("token") ? (
+        <>
+          <button
+            onClick={(e) => {
+              navigate("/", {
+                state: {
+                  preCart: newCart,
+                  preMainPageState: mainPageState,
+                  preSearchResult: searchResult,
+                  preFilter: filter,
+                  preItem: item,
+                },
+              });
+            }}
+          >
+            Back
+          </button>
 
-      <br />
+          <br />
 
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.keys(newCart).map((_id) => (
-            <tr key={_id}>
-              <td>{newCart[_id].title}</td>
-              <td>{newCart[_id].price}</td>
-              <td>{newCart[_id].quantity}</td>
-              <td>
-                <button
-                  onClick={() => {
-                    let quantity = prompt("Please update the quantity:", 1);
-                    quantity = parseInt(quantity.trim());
-                    if (quantity >= 0 && quantity <= newCart[_id].stock) {
-                      updateItem(_id, quantity);
-                    } else {
-                      alert("Invalid! Check the available stock!");
-                    }
-                  }}
-                >
-                  Modify
-                </button>
-              </td>
-              <td>
-                <button onClick={() => deleteItem(_id)}>Remove</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(newCart).map((_id) => (
+                <tr key={_id}>
+                  <td>{newCart[_id].title}</td>
+                  <td>{newCart[_id].price}</td>
+                  <td>{newCart[_id].quantity}</td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        let quantity = prompt("Please update the quantity:", 1);
+                        quantity = parseInt(quantity.trim());
+                        if (quantity >= 0 && quantity <= newCart[_id].stock) {
+                          updateItem(_id, quantity);
+                        } else {
+                          alert("Invalid! Check the available stock!");
+                        }
+                      }}
+                    >
+                      Modify
+                    </button>
+                  </td>
+                  <td>
+                    <button onClick={() => deleteItem(_id)}>Remove</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-      <br />
+          <br />
 
-      <p>Total Price: {totalPrice}</p>
+          <p>Total Price: {totalPrice}</p>
 
-      <button
-        onClick={() => {
-          console.log(newCart);
-        }}
-      >
-        Confirm
-      </button>
+          <button
+            onClick={() => {
+              const data = Object.keys(newCart).map((_id) => ({
+                _id,
+                quantity: newCart[_id].quantity,
+              }));
+
+              fetch("/api/checkout", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              })
+                .then((response) => {
+                  console.log("Checkout successful:", response.data);
+                })
+                .catch((error) => {
+                  console.error("Error during checkout:", error);
+                });
+            }}
+          >
+            Confirm
+          </button>
+        </>
+      ) : (
+        <p>Please log in.</p>
+      )}
     </>
   );
 }
