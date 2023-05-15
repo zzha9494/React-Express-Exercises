@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function ItemState({ setMainPageState, item }) {
+function ItemState({ setMainPageState, item, cart, setCart }) {
   return (
     <>
       <button
@@ -40,7 +40,26 @@ function ItemState({ setMainPageState, item }) {
         </li>
       </ul>
 
-      <button>Add</button>
+      <button
+        onClick={() => {
+          let quantity = prompt("Please update the quantity:", 1);
+          quantity = parseInt(quantity.trim());
+          if (quantity >= 0 && quantity <= item.stock) {
+            setCart({
+              ...cart,
+              [item._id]: {
+                title: item.title,
+                price: item.price,
+                quantity: quantity,
+              },
+            });
+          } else {
+            alert("Invalid! Check the available stock!");
+          }
+        }}
+      >
+        Add/Update quantity
+      </button>
 
       <p>Added quantity: </p>
 

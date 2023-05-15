@@ -94,7 +94,14 @@ function TopBar({
 
       <button
         onClick={(e) => {
-          navigate("/checkout", { state: { cart } });
+          navigate("/checkout", {
+            state: {
+              cart,
+              mainPageState,
+              searchResult,
+              filter,
+            },
+          });
         }}
       >
         Checkout

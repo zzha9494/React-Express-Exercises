@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import TopBar from "./TopBar";
 import HomeState from "./HomeState";
 import SearchState from "./SearchState";
 import ItemState from "./ItemState";
 
 function Main() {
-  const [mainPageState, setMainPageState] = useState(0);
-  const [searchResult, setSearchResult] = useState([]);
-  const [filter, setFilter] = useState({ brand: "", price: Infinity });
-  const [item, setItem] = useState({});
-  const [cart, setCart] = useState(["test this is a cart"]);
+  const { state } = useLocation();
 
-  useEffect(() => console.log(item), [item]);
+  const { preCart, preMainPageState, preSearchResult, preFilter } = state ?? {};
+
+  const [mainPageState, setMainPageState] = useState(
+    preMainPageState ? preMainPageState : 0
+  );
+  const [searchResult, setSearchResult] = useState(
+    preSearchResult ? preSearchResult : []
+  );
+  const [filter, setFilter] = useState(
+    preFilter ? preFilter : { brand: "", price: Infinity }
+  );
+  const [item, setItem] = useState({});
+  const [cart, setCart] = useState(preCart ? preCart : {});
+
+  // useEffect(() => console.log(item), [item]);
 
   return (
     <>
@@ -35,7 +46,12 @@ function Main() {
           setItem={setItem}
         />
       ) : (
-        <ItemState setMainPageState={setMainPageState} item={item} />
+        <ItemState
+          setMainPageState={setMainPageState}
+          item={item}
+          cart={cart}
+          setCart={setCart}
+        />
       )}
     </>
   );

@@ -1,16 +1,30 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Checkout() {
+  const navigate = useNavigate();
   const { state } = useLocation();
 
-  const { cart } = state;
-  console.log(cart)
+  const { cart, mainPageState, searchResult, filter } = state;
+  console.log(cart);
   return (
     <>
       <h1>Checkout Page</h1>
 
-      <button onclick="goToPreviousPage()">back</button>
+      <button
+        onClick={(e) => {
+          navigate("/", {
+            state: {
+              preCart: cart,
+              preMainPageState: mainPageState,
+              preSearchResult: searchResult,
+              preFilter: filter,
+            },
+          });
+        }}
+      >
+        Back
+      </button>
 
       <button>empty cart</button>
 
@@ -30,7 +44,7 @@ function Checkout() {
           </tr>
         </th>
 
-        {cart.map((item, key) => {
+        {/* {cart.map((item, key) => {
           // const totalPrice = item.price * item.quanity;
           return (
             <tr>
@@ -52,7 +66,7 @@ function Checkout() {
               </td>
             </tr>
           );
-        })}
+        })} */}
         <tr>
           <td colSpan="2">Total Price</td>
           {/* <td colSpan="2">{totalCartPrice}</td> */}
