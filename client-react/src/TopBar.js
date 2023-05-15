@@ -27,6 +27,7 @@ function TopBar({
   filter,
   setFilter,
   cart,
+  item,
 }) {
   const [login, setLogin] = useState(
     localStorage.getItem("token") ? true : false
@@ -100,6 +101,7 @@ function TopBar({
               mainPageState,
               searchResult,
               filter,
+              item,
             },
           });
         }}

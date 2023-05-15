@@ -7,8 +7,8 @@ import ItemState from "./ItemState";
 
 function Main() {
   const { state } = useLocation();
-
-  const { preCart, preMainPageState, preSearchResult, preFilter } = state ?? {};
+  const { preCart, preMainPageState, preSearchResult, preFilter, preItem } =
+    state ?? {};
 
   const [mainPageState, setMainPageState] = useState(
     preMainPageState ? preMainPageState : 0
@@ -19,7 +19,7 @@ function Main() {
   const [filter, setFilter] = useState(
     preFilter ? preFilter : { brand: "", price: Infinity }
   );
-  const [item, setItem] = useState({});
+  const [item, setItem] = useState(preItem ? preItem : {});
   const [cart, setCart] = useState(preCart ? preCart : {});
 
   // useEffect(() => console.log(item), [item]);
@@ -34,6 +34,7 @@ function Main() {
         filter={filter}
         setFilter={setFilter}
         cart={cart}
+        item={item}
       />
       <br />
       {mainPageState === 0 ? (
