@@ -21,9 +21,9 @@ function TopBar({
   filter,
   setFilter,
 }) {
-  const [login, setLogin] = useState(false);
-
-  useEffect(() => console.log(login ? "log in!" : "log out!"), [login]);
+  const [login, setLogin] = useState(
+    localStorage.getItem("token") ? true : false
+  );
 
   return (
     <>
@@ -126,16 +126,6 @@ function TopBar({
           </button>
         </Link>
       ) : null}
-
-      {/* // test button for switch login status, to be delete */}
-      <button
-        onClick={() => {
-          setLogin(!login);
-        }}
-      >
-        Switch login status
-      </button>
-      {/* // test button for switch login status, to be delete */}
     </>
   );
 }
