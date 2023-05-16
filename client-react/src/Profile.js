@@ -237,6 +237,7 @@ function ChangePassword({ profile }) {
 
 function ManageListings({ profile }) {
   const formRef = useRef(0);
+  const [listings, setListings] = useState([]);
 
   const submitListing = (e) => {
     e.preventDefault();
@@ -308,6 +309,14 @@ function ManageListings({ profile }) {
 
         <button type="submit">Add New Listing</button>
       </form>
+
+      <br />
+
+      {listings.length == 0 ? (
+        <p1>There are no your listings now.</p1>
+      ) : (
+        <p1>Your listings:</p1>
+      )}
     </>
   );
 }
