@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const navigate = useNavigate();
 
   const [mode, setMode] = useState(0);
+  const [profile, setProfile] = useState({});
 
   return (
     <>
@@ -31,8 +32,10 @@ function Profile() {
 
           <br />
 
-          {mode == 0 && <EditProfile />}
-          {mode == 1 && <ChangePassword />}
+          {mode == 0 && (
+            <EditProfile profile={profile} setProfile={setProfile} />
+          )}
+          {mode == 1 && <ChangePassword profile={profile} />}
           {mode == 2 && <ManageListings />}
           {mode == 3 && <ViewComments />}
         </>
@@ -81,9 +84,7 @@ function SwitchMode({ setMode }) {
   );
 }
 
-function EditProfile() {
-  const [profile, setProfile] = useState({});
-
+function EditProfile({ profile, setProfile }) {
   useEffect(() => {
     fetch(`/api/getProfile?id=${localStorage.getItem("token")}`, {
       method: "GET",
@@ -183,8 +184,55 @@ function EditProfile() {
   );
 }
 
-function ChangePassword() {
-  return <p1>this is change password.</p1>;
+function ChangePassword({ profile }) {
+  const formRef = useRef(0);
+
+  const submitChangePassword = (e) => {
+    e.preventDefault();
+
+    if (!window.confirm("Confirm?")) {
+      return;
+    } else {
+      const data = new URLSearchParams(new FormData(e.target));
+      data.append("_id", profile._id ?? null);
+
+      fetch("/api/changePassword", { method: e.target.method, body: data })
+        .then((res) => res.json())
+        .then((data) => {
+          formRef.current.reset();
+          alert(data.message);
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
+  return (
+    <form ref={formRef} method="post" onSubmit={(e) => submitChangePassword(e)}>
+      <label>
+        Current Password:
+        <input
+          type="password"
+          name="currentPassword"
+          // pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{6,}$"
+          size="30"
+          required
+        />
+      </label>
+
+      <label>
+        New Password:
+        <input
+          type="password"
+          name="newPassword"
+          // pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{6,}$"
+          size="30"
+          required
+        />
+      </label>
+
+      <button type="submit">Confirm</button>
+    </form>
+  );
 }
 
 function ManageListings() {

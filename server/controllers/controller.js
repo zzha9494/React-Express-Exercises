@@ -5,6 +5,53 @@ import jwt from "jsonwebtoken";
 const controller = {};
 const saltRounds = 10;
 
+controller.changePassword = (req, res) => {
+  const { currentPassword, newPassword, _id } = req.body;
+
+  User.findById(_id)
+    .then((user) => {
+      if (!user) {
+        return res.status(401).json({ message: "Invalid user" });
+      }
+
+      bcrypt
+        .compare(currentPassword, user.password)
+        .then((result) => {
+          if (result) {
+            bcrypt
+              .hash(newPassword, saltRounds)
+              .then((hashedPassword) => {
+                user.password = hashedPassword;
+
+                user
+                  .save()
+                  .then(() => {
+                    res
+                      .status(200)
+                      .json({ message: "Password changed successfully" });
+                  })
+                  .catch(() => {
+                    res
+                      .status(500)
+                      .json({ message: "Failed to change password" });
+                  });
+              })
+              .catch(() => {
+                res.status(500).json({ message: "Internal server error" });
+              });
+          } else {
+            return res.status(401).json({ message: "Wrong password" });
+          }
+        })
+        .catch(() => {
+          res.status(500).json({ message: "Internal server error" });
+        });
+    })
+    .catch(() => {
+      res.status(500).json({ message: "Internal server error" });
+    });
+};
+
 controller.editProfile = (req, res) => {
   const { _id, firstname, lastname, email, password } = req.body;
 

@@ -13,6 +13,7 @@ router.get("/getBestSellers", controller.getBestSellers);
 router.get("/getProfile", controller.getProfile);
 
 router.post("/editProfile", controller.editProfile);
+router.post("/changePassword", controller.changePassword);
 
 router.post("/checkout", controller.checkout);
 
