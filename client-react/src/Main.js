@@ -22,8 +22,6 @@ function Main() {
   const [item, setItem] = useState(preItem ? preItem : {});
   const [cart, setCart] = useState(preCart ? preCart : {});
 
-  // useEffect(() => console.log(item), [item]);
-
   return (
     <>
       <TopBar

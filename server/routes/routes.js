@@ -10,6 +10,8 @@ router.get("/getPhone", controller.getPhone);
 router.get("/getSoldOutSoon", controller.getSoldOutSoon);
 router.get("/getBestSellers", controller.getBestSellers);
 
+router.get("/getProfile", controller.getProfile)
+
 router.post("/checkout", controller.checkout)
 
 router.post("/login", controller.login);

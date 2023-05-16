@@ -5,6 +5,32 @@ import jwt from "jsonwebtoken";
 const controller = {};
 const saltRounds = 10;
 
+controller.getProfile = (req, res) => {
+  const token = req.query.id;
+
+  jwt.verify(token, "Zijie Zhao", (err, decodedToken) => {
+    if (err) {
+      return res.status(401).json({ message: "Invalid" });
+    }
+
+    const userId = decodedToken.userId;
+
+    User.findById(userId)
+      .select("_id firstname lastname email")
+      .then((user) => {
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json(user);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error" });
+      });
+  });
+};
+
 controller.checkout = (req, res) => {
   const data = req.body;
 
