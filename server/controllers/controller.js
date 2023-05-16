@@ -5,6 +5,55 @@ import jwt from "jsonwebtoken";
 const controller = {};
 const saltRounds = 10;
 
+controller.editProfile = (req, res) => {
+  const { _id, firstname, lastname, email, password } = req.body;
+
+  User.findById(_id).then((user) => {
+    if (!user) {
+      return res.status(401).json({ message: "Invalid user" });
+    }
+
+    bcrypt
+      .compare(password, user.password)
+      .then((result) => {
+        if (result) {
+          User.findOne({ email: email })
+            .then((existingUser) => {
+              if (existingUser && existingUser._id.toString() !== _id) {
+                return res
+                  .status(409)
+                  .json({ message: "Email already exists" });
+              }
+
+              user.firstname = firstname;
+              user.lastname = lastname;
+              user.email = email;
+
+              user
+                .save()
+                .then(() => {
+                  res.status(200).json({
+                    message: "Profile updated successfully",
+                    profile: { firstname, lastname, email, _id },
+                  });
+                })
+                .catch((error) => {
+                  res.status(500).json({ message: "Failed to update profile" });
+                });
+            })
+            .catch(() => {
+              res.status(500).json({ message: "Internal server error" });
+            });
+        } else {
+          return res.status(401).json({ message: "Invalid email or password" });
+        }
+      })
+      .catch(() => {
+        res.status(500).json({ message: "Internal server error" });
+      });
+  });
+};
+
 controller.getProfile = (req, res) => {
   const token = req.query.id;
 

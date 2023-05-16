@@ -12,8 +12,6 @@ function Profile() {
 
       <button onClick={() => navigate(-1)}>Back</button>
 
-      <br />
-
       {localStorage.getItem("token") ? (
         <>
           <button
@@ -109,22 +107,28 @@ function EditProfile() {
 
   const submitEdit = (e) => {
     e.preventDefault();
-    const data = new URLSearchParams(new FormData(e.target));
-    data.append("_id", profile._id ?? null);
 
-    fetch("/api/something", { method: e.target.method, body: data })
-      .then((res) => {
-        if (res.status == 201) {
-          res.json().then((data) => {
-            alert(data.message);
-          });
-        } else {
-          res.json().then((data) => {
-            alert(data.message);
-          });
-        }
-      })
-      .catch((error) => console.error(error));
+    const data = new URLSearchParams(new FormData(e.target));
+    if (profile._id == null) {
+      alert("Invalid user!");
+    } else {
+      data.append("_id", profile._id);
+
+      fetch("/api/editProfile", { method: e.target.method, body: data })
+        .then((res) => {
+          if (res.status == 200) {
+            res.json().then((data) => {
+              alert(data.message);
+              setProfile(data.profile);
+            });
+          } else {
+            res.json().then((data) => {
+              alert(data.message);
+            });
+          }
+        })
+        .catch((error) => console.error(error));
+    }
   };
 
   return (
