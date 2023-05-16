@@ -14,6 +14,7 @@ router.get("/getProfile", controller.getProfile);
 
 router.post("/editProfile", controller.editProfile);
 router.post("/changePassword", controller.changePassword);
+router.post("/addListing", controller.addListing);
 
 router.post("/checkout", controller.checkout);
 

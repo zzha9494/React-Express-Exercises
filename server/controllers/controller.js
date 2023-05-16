@@ -5,6 +5,41 @@ import jwt from "jsonwebtoken";
 const controller = {};
 const saltRounds = 10;
 
+controller.addListing = (req, res) => {
+  const { title, brand, stock, price, _id } = req.body;
+
+  User.findById(_id)
+    .then((user) => {
+      if (!user) {
+        return res.status(401).json({ message: "Invalid user" });
+      }
+
+      const newPhone = new Phone({
+        title: title.trim(),
+        brand,
+        image: "imageurl",
+        stock,
+        seller: _id,
+        price,
+        reviews: [],
+      });
+
+      newPhone
+        .save()
+        .then(() => {
+          res
+            .status(200)
+            .json({ message: "New phone listing added successfully" });
+        })
+        .catch((error) => {
+          res.status(500).json({ message: "Failed to add new phone listing" });
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Internal server error" });
+    });
+};
+
 controller.changePassword = (req, res) => {
   const { currentPassword, newPassword, _id } = req.body;
 

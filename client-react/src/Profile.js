@@ -36,7 +36,7 @@ function Profile() {
             <EditProfile profile={profile} setProfile={setProfile} />
           )}
           {mode == 1 && <ChangePassword profile={profile} />}
-          {mode == 2 && <ManageListings />}
+          {mode == 2 && <ManageListings profile={profile} />}
           {mode == 3 && <ViewComments />}
         </>
       ) : (
@@ -235,8 +235,81 @@ function ChangePassword({ profile }) {
   );
 }
 
-function ManageListings() {
-  return <p1>this is manage.</p1>;
+function ManageListings({ profile }) {
+  const formRef = useRef(0);
+
+  const submitListing = (e) => {
+    e.preventDefault();
+
+    const data = new URLSearchParams(new FormData(e.target));
+    data.append("_id", profile._id ?? null);
+
+    fetch("/api/addListing", { method: e.target.method, body: data })
+      .then((res) => {
+        if (res.status == 200) {
+          res.json().then((data) => {
+            alert(data.message);
+            formRef.current.reset();
+          });
+        } else {
+          res.json().then((data) => {
+            alert(data.message);
+          });
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
+  return (
+    <>
+      <form ref={formRef} method="post" onSubmit={(e) => submitListing(e)}>
+        <label>
+          Title:
+          <input
+            type="text"
+            name="title"
+            pattern="^[a-zA-Z0-9\s()]+$"
+            size="30"
+            required
+          />
+        </label>
+
+        <label>
+          Brand:
+          <select name="brand" required>
+            <option value="Samsung">Samsung</option>
+            <option value="Apple">Apple</option>
+            <option value="HTC">HTC</option>
+            <option value="Huawei">Huawei</option>
+            <option value="Nokia">Nokia</option>
+            <option value="LG">LG</option>
+            <option value="Motorola">Motorola</option>
+            <option value="Sony">Sony</option>
+            <option value="BlackBerry">BlackBerry</option>
+          </select>
+        </label>
+
+        <label>
+          Stock:
+          <input type="number" name="stock" size="30" min="1" required />
+        </label>
+
+        <label>
+          Price:
+          <input
+            type="number"
+            name="price"
+            step="0.1"
+            min="0.1"
+            size="30"
+            required
+          />
+        </label>
+
+        <button type="submit">Add New Listing</button>
+      </form>
+    </>
+  );
 }
 
 function ViewComments() {
